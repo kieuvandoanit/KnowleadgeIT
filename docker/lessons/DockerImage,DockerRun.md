@@ -79,5 +79,70 @@ docker tag <image_id> <name>:<tag>
 1) Chia sẻ dữ liệu máy host với container
 ```sh
 docker run -it -v pathHost:pathContainer <imageID>
-
+# docker run -it -v "D:\vandoan\KnowleadgeIT":/hom/dulieu ff85
 ```
+2) Tạo 1 container khác có chung thư mục chia sẻ dữ liệu với 1 container đã tồn tại
+```sh
+docker run -it --volumes-from <OtherContainer> <imageID>
+```
+3) Tạo và quản lý ổ đĩa docker volume
+- Kiểm tra xem có ổ đĩa nào đang chạy
+```sh
+docker volume ls
+```
+- Tạo 1 ổ đĩa
+```sh
+docker volume create <NameDisk>
+```
+- Kiểm tra thông tin ổ đĩa
+```sh
+docker volume inspect <NameDisk>
+```
+- Xóa 1 ổ đĩa
+```sh
+docker volume rm <NameDisk>
+```
+- Tạo 1 container gắn ổ đĩa volume vào container
+```sh
+# docker run -it --mount source=DISK, targe=pathContainer imageID
+docker run -it -name C1 --mount source=D2, target=/home/disk2 ubuntu:latest
+```
+- Tạo ổ đĩa ánh xạ vào thư mục máy host
+```sh
+docker volume create --opt device="D:\vandoan\KnowleadgeIT" --opt type=none --opt o=bind DISK1
+```
+- Tạo container gắn volume ánh xạ vào máy host
+```sh
+docker run -it -v DISK1:/home/disk ubuntu:lastest
+```
+
+## Networking trong Docker, tạo và quản lý network
+- Kiểm tra xem trong docker đang có những mạng nào
+```sh
+docker network ls
+```
+- Kiểm tra thông tin network
+```sh
+docker network inspect <network_name>
+```
+- Ánh xạ cổng từ container vào máy host
+```sh
+docker run -it --name B2 -p 8888:80 <imageName>
+```
+- Tạo ra 1 network
+```sh
+docker network create --driver bridge <networkName>
+```
+- Xóa 1 network
+```sh
+docker network rm <networkName>
+```
+- Tạo container kết nối tới network
+```sh
+docker run -it --name B3 --network <networkName> <imageName>
+```
+- Gắn network cho 1 container đang chạy
+```sh
+docker network connect <networkName> <containerName>
+```
+Hihi
